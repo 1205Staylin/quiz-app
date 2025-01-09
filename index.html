@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .quiz-container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            text-align: center;
+        }
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 10px 0;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .celebration {
+            display: none;
+            font-size: 2em;
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="quiz">
+            <div class="question">Question will appear here</div>
+            <ul class="options">
+                <li><button onclick="checkAnswer(0)">Option 1</button></li>
+                <li><button onclick="checkAnswer(1)">Option 2</button></li>
+                <li><button onclick="checkAnswer(2)">Option 3</button></li>
+                <li><button onclick="checkAnswer(3)">Option 4</button></li>
+            </ul>
+        </div>
+        <div class="result" id="result"></div>
+        <div class="celebration" id="celebration">🎉 Congratulations! 🎉</div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is 2 + 2?",
+                options: ["3", "4", "5", "6"],
+                correct: 1
+            },
+            {
+                question: "What color is the sky on a clear day?",
+                options: ["Blue", "Green", "Red", "Yellow"],
+                correct: 0
+            },
+            {
+                question: "What is the capital of France?",
+                options: ["Berlin", "Madrid", "Paris", "Rome"],
+                correct: 2
+            },
+            {
+                question: "Which is the largest planet in our solar system?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                correct: 2
+            },
+            {
+                question: "How many continents are there?",
+                options: ["5", "6", "7", "8"],
+                correct: 2
+            },
+            {
+                question: "Which element has the chemical symbol 'O'?",
+                options: ["Gold", "Oxygen", "Osmium", "Ozone"],
+                correct: 1
+            },
+            {
+                question: "What is the chemical formula for water?",
+                options: ["H2O", "CO2", "O2", "NaCl"],
+                correct: 0
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"],
+                correct: 1
+            },
+            {
+                question: "What is the smallest country in the world?",
+                options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+                correct: 1
+            },
+            {
+                question: "Which ocean is the largest?",
+                options: ["Atlantic", "Indian", "Pacific", "Arctic"],
+                correct: 2
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const quiz = document.getElementById('quiz');
+            const result = document.getElementById('result');
+            result.textContent = '';
+
+            if (currentQuestion < quizData.length) {
+                const questionData = quizData[currentQuestion];
+                quiz.querySelector('.question').textContent = questionData.question;
+                const options = quiz.querySelectorAll('.options button');
+                options.forEach((button, index) => {
+                    button.textContent = questionData.options[index];
+                });
+            } else {
+                quiz.innerHTML = `<div class="result">You scored ${score} out of ${quizData.length}!</div>`;
+                showCelebration();
+            }
+        }
+
+        function checkAnswer(selected) {
+            const correct = quizData[currentQuestion].correct;
+            const result = document.getElementById('result');
+
+            if (selected === correct) {
+                score++;
+                result.textContent = `Correct! The right answer is: ${quizData[currentQuestion].options[correct]}`;
+            } else {
+                result.textContent = `Wrong! The correct answer is: ${quizData[currentQuestion].options[correct]}`;
+            }
+
+            currentQuestion++;
+            setTimeout(loadQuestion, 2000);
+        }
+
+        function showCelebration() {
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'block';
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
